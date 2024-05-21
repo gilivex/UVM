@@ -29,44 +29,6 @@ endfunction
 function void connect_phase(uvm_phase phase);
 endfunction
 
-// virtual function void write_port_in(transaction trans_in);
-//     this.tr_in.enable = trans_in.enable;
-//     this.tr_in.data = trans_in.data;
-//     this.tr_in.load = trans_in.load;
-//     this.tr_in.rst = trans_in.rst;
-
-// endfunction
-
-// virtual function void write_port_out(transaction trans_out);
-
-//     this.tr_out.count = trans_out.count;
-//     compare(this.tr_in, this.tr_out);
-// endfunction
-
-// task compare(transaction tr_in, transaction tr_out);
-
-//     if(tr_in.rst == 1 && count != 0 ) begin
-//         `uvm_error(scoreboard(), " Reset not working properly")
-//     else
-//         count = 0;
-//     end
-//     else begin
-//     if(tr_in.load == 1) begin
-//          = tr_in.data;
-//         return;
-//     end
-//     if(tr_in.enable == 1) begin
-//         count = count + 1;
-//         return;
-//     end
-//     if(tr_out.count == this.count)
-//         `uvm_info(get_type_name(), "Count match", UVM_MEDIUM)
-//     else       
-//         `uvm_error(get_type_name(), "Count mismatch")
-//   endtask
-
-
-
 virtual function void write_port_in(transaction tr);
 $display("Inside write_port_in");
 $display("tr.enable = %0d, tr.data_in = %0d, tr.load = %0d, tr.rst = %0d", tr.enable, tr.data_in, tr.load, tr.rst);
