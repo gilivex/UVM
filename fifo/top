@@ -17,7 +17,7 @@ module top ;
     end
 
     inf i_inf(clk,rst);
-    fifo c1(i_inf);
+    fifo f1(i_inf);
 
     initial begin
         uvm_config_db#(virtual inf)::set(null, "uvm_test_top.*", "inf", i_inf);
