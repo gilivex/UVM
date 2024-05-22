@@ -4,7 +4,6 @@ parameter AWIDTH = 4,
 parameter DWIDTH = 4
 )
 (
-
 // port declarations
 inf.DUT i_inf
 );

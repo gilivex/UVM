@@ -1,7 +1,6 @@
 `uvm_analysis_imp_decl(_port_in)
 `uvm_analysis_imp_decl(_port_out)
 `include "ref_model.sv"
-
 //define enum type for max size of fifo and min size of fifo
 typedef enum {MIN_SIZE = 0, MAX_SIZE = 16} fifo_size_enum;
 
@@ -9,17 +8,17 @@ class scoreboard extends uvm_scoreboard;
 
 `uvm_component_utils(scoreboard)   
 
-uvm_analysis_imp_port_in#(transaction, scoreboard) scb_port_in;
-uvm_analysis_imp_port_out#(transaction, scoreboard) scb_port_out;
+uvm_analysis_imp_port_in#(my_transaction, scoreboard) scb_port_in;
+uvm_analysis_imp_port_out#(my_transaction, scoreboard) scb_port_out;
 
 ref_model ref_m;
-transaction trans_ref;
-transaction trans_in;
-transaction trans_out;
+my_transaction trans_ref;
+my_transaction trans_in;
+my_transaction trans_out;
 int num_of_trans_in = 0;
 int num_of_trans_out = 0;
 // int fifo_size = 0;
-transaction my_fifo[$];
+my_transaction my_fifo[$];
 
 function new(string name = "scoreboard", uvm_component parent);
     super.new(name, parent);
@@ -39,16 +38,16 @@ endfunction
 function void connect_phase(uvm_phase phase);
 endfunction
 
-virtual function void write_port_in(transaction trans);
+virtual function void write_port_in(my_transaction trans);
 trans_in.read_en = trans.read_en;
 trans_in.write_en = trans.write_en;
 trans_in.data_in = trans.data_in;
 
 trans_ref = ref_m.step(trans_in);
-my_fifo.push(trans_ref);
+my_fifo.push_back(trans_ref);
 endfunction
 
-virtual function void write_port_out(transaction trans);
+virtual function void write_port_out(my_transaction trans);
 trans_out.full = trans.full;
 trans_out.empty = trans.empty;
 trans_out.data_out = trans.data_out;
@@ -56,12 +55,13 @@ trans_out.data_out = trans.data_out;
 compare(trans_out, my_fifo.pop_front());
 endfunction
 
-virtual function void compare(transaction dut_out, transaction ref_out);
+virtual function void compare(my_transaction dut_out, my_transaction ref_out);
     if((dut_out.empty != ref_out.empty) || (dut_out.full != ref_out.full)) begin
-        `uvm_waring(get_type_name(), "TEST FAILED", UVM_LOW)
+        `uvm_warning("", "TEST FAILED")
+    
          if (ref_out.is_data_valid)
             if(dut_out.data_out != ref_out.data_out)
-        `uvm_waring(get_type_name(), "TEST FAILED", UVM_LOW)
+        `uvm_warning("", "TEST FAILED")
             else
         `uvm_info(get_type_name(), "TEST PASSED", UVM_LOW)
     end

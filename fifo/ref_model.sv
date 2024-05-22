@@ -3,10 +3,10 @@ class ref_model;
     bit [3:0] queue_data[$];
     int MAX_SIZE = 16;
     int MIN_SIZE = 0;
-    transaction t_out;
+    my_transaction t_out;
 
     function new();
-        transaction t_out = new();
+        my_transaction t_out = new();
         reset();
     endfunction
 
@@ -32,13 +32,13 @@ class ref_model;
         end
     endfunction
 
-    function transaction rst_res();
+    function my_transaction rst_res();
         reset();
         this.t_out = new();
         return this.t_out;
     endfunction
 
-    function transaction def_res();
+    function my_transaction def_res();
         this.t_out = new();
         this.t_out.is_data_valid = 0;
         this.t_out.full = is_full();
@@ -46,14 +46,14 @@ class ref_model;
         return t_out;
     endfunction
 
-    function transaction write_res(transaction t_in);
+    function my_transaction write_res(my_transaction t_in);
         if(queue_data.size() < MAX_SIZE) begin
             queue_data.push_back(t_in.data_in);
         end
         return def_res();
     endfunction
 
-    function transaction read_res(transaction t_in);
+    function my_transaction read_res(my_transaction t_in);
         this.t_out = new();
         if(!is_empty()) begin
             this.t_out.data_out = queue_data.pop_front();
@@ -67,7 +67,7 @@ class ref_model;
         end
     endfunction
 
-    function transaction step(transaction t_in);
+    function my_transaction step(my_transaction t_in);
 
         if(t_in.rst == 1'b1) 
             return rst_res();
