@@ -6,10 +6,7 @@ parameter DWIDTH = 4
 (
 
 // port declarations
-input 	   clk, rst, write_en, read_en,
-input	      [DWIDTH-1:0] data_in,
-output      full, empty,
-output reg  [DWIDTH-1:0] data_out
+inf.DUT i_inf
 );
 
 // variable declarations
@@ -21,25 +18,25 @@ reg [AWIDTH-1:0] rptr;
 reg wrote;
 
 // functional code
-always @(posedge clk or posedge rst) begin
-	if (rst) begin
+always @(posedge i_inf.clk or posedge i_inf.rst) begin
+	if (i_inf.rst) begin
 		rptr <= 1'b0;
 		wptr <= 1'b0;
 		wrote <= 1'b0;  
 	end
-	else if (read_en && !empty)  begin
-			data_out <= mem[rptr];
+	else if (i_inf.read_en && !i_inf.empty)  begin
+			i_inf.data_out <= mem[rptr];
 			rptr <= rptr + 1;  
 			wrote <= 0;
 	end
-	else if (write_en && !full)  begin
-		mem[wptr] <= data_in;
+	else if (i_inf.write_en && !i_inf.full)  begin
+		mem[wptr] <= i_inf.data_in;
 		wptr <= wptr + 1;
 		wrote <= 1;  
 	end 
 end
 
-assign empty = (rptr == wptr) && !wrote;  
-assign full  = (rptr == wptr) &&	wrote;
+assign i_inf.empty = (rptr == wptr) && !wrote;  
+assign i_inf.full  = (rptr == wptr) &&	wrote;
 
 endmodule

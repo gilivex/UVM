@@ -18,10 +18,9 @@ class driver extends uvm_driver #(transaction);
            forever begin
             seq_item_port.get_next_item(trans);
              @(posedge vinf.clk) begin
-            vinf.write_en = trans.write_en;
-            vinf.read_en = trans.read_en;
-            vinf.data_in = trans.data_in;
-            vinf.rst = trans.rst;
+            vinf.write_en <= trans.write_en;
+            vinf.read_en <= trans.read_en;
+            vinf.data_in <= trans.data_in;
             
             seq_item_port.item_done();
             end

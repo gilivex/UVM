@@ -22,22 +22,28 @@ uvm_analysis_port #(transaction) mon_out_port;
         task run_phase(uvm_phase phase);
             transaction trans;
         trans = transaction::type_id::create("tr",this);
-           
+           is_valid = 0;
             forever begin           
                 @(posedge vinf.clk);
-                #3ps;
-            if((v_inf.write_en)||(v_inf.read_en)||(v_inf.rst)) 
-               is_valid = 1;
-               else
-                is_valid = 0;
-            
-            if(is_valid)
-               begin
-                trans.data_out = vinf.data_out;
-                trans.empty = vinf.empty;
-                trans.full = vinf.full;
-                 mon_out_port.write(trans);
-            end
+                fork 
+                    begin
+                      #2ps;
+                     if((vinf.write_en)||(vinf.read_en)||(vinf.rst)) 
+                      is_valid = 1;
+                      else
+                    is_valid = 0;
+                    end
+
+                    begin
+                    if(is_valid)
+                    begin
+                    trans.data_out = vinf.data_out;
+                    trans.empty = vinf.empty;
+                    trans.full = vinf.full;
+                    mon_out_port.write(trans);
+                    end
+                    end
+                join              
             end
         endtask
 endclass

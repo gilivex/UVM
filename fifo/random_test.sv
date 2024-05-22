@@ -24,7 +24,7 @@ class random_test extends uvm_test;
         `uvm_error("RANDOMIZE_FAILED", "Failed to randomize sequence")
         seq.start(my_env.age_in.seqr);
         #4ns;
-      `uvm_info("",$sformatf("num_of_tr_in = %0d, num_of_tr_out = %0d", my_env.scb.num_of_tr_in, my_env.scb.num_of_tr_out), UVM_MEDIUM);
+      `uvm_info("",$sformatf("num_of_tr_in = %0d, num_of_tr_out = %0d", my_env.scb.num_of_trans_in, my_env.scb.num_of_trans_out), UVM_MEDIUM);
       `uvm_info("", "This is a random test running", UVM_MEDIUM)
 		phase.drop_objection(this);
     endtask

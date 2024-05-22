@@ -9,7 +9,7 @@ transaction tr;
 
     task body();
 
-    repeat(100)
+    repeat(2000)
     begin
     tr = transaction::type_id::create("tr");
     start_item(tr);

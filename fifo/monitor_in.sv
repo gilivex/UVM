@@ -16,18 +16,18 @@ uvm_analysis_port #(transaction) mon_in_port;
 
 function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-       if(!uvm_config_db#(virtual inf)::get(this,"","inf",v_inf))
+       if(!uvm_config_db#(virtual inf)::get(this,"","inf",vinf))
         `uvm_fatal("MON_ERR", "Monitor needs an interface")
         mon_in_port = new("mon_in_port", this);
 endfunction
 
         task run_phase(uvm_phase phase);
-            trans = transaction::type_id::create("tr",this);        
+            trans = transaction::type_id::create("trans",this);        
             
             forever begin
-            @(posedge v_inf.clk);
-            #2ps;
-            if((v_inf.write_en)||(v_inf.read_en)||(v_inf.rst)) 
+            @(posedge vinf.clk);
+            #1ps;
+            if((vinf.write_en)||(vinf.read_en)||(vinf.rst)) 
             begin
             trans.write_en = vinf.write_en;
             trans.read_en = vinf.read_en;
