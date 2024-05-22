@@ -10,7 +10,8 @@ uvm_analysis_imp_port_out#(transaction, scoreboard) scb_port_out;
 transaction tr_in;
 transaction tr_out;
 bit [7:0] count;
-bit [7:0] cur_count;
+int num_of_tr_in = 0;
+int num_of_tr_out = 0;
 
 function new(string name = "scoreboard", uvm_component parent);
     super.new(name, parent);
@@ -30,6 +31,7 @@ function void connect_phase(uvm_phase phase);
 endfunction
 
 virtual function void write_port_in(transaction tr);
+num_of_tr_in++;
 $display("Inside write_port_in");
 $display("tr.enable = %0d, tr.data_in = %0d, tr.load = %0d, tr.rst = %0d", tr.enable, tr.data_in, tr.load, tr.rst);
    
@@ -38,7 +40,6 @@ $display("tr.enable = %0d, tr.data_in = %0d, tr.load = %0d, tr.rst = %0d", tr.en
         return;
         end;
     if(tr.load) begin
-        cur_count = tr.data_in;
         count = tr.data_in;
         return;
         end;
@@ -49,6 +50,7 @@ $display("tr.enable = %0d, tr.data_in = %0d, tr.load = %0d, tr.rst = %0d", tr.en
     endfunction
 
     virtual function void write_port_out(transaction tr);
+    num_of_tr_out++;
         $display("Inside write_port_out");
         $display("tr.count = %0d", tr.count);
     if(tr.count == this.count)
