@@ -6,12 +6,14 @@ Here's a specification sheet for the given FIFO (First-In, First-Out) buffer mod
 
 ### Module Overview
 
-The `fifo` module is a parameterized FIFO buffer, which allows for temporary storage and retrieval of data in a first-in, first-out manner. The module is parameterizable in terms of address width (`AWIDTH`) and data width (`DWIDTH`).
+The `fifo` module is a parameterized FIFO buffer,
+ which allows for temporary storage and retrieval of data in a first-in, first-out manner. 
+ The module is parameterizable in terms of address width (`AWIDTH`) and data width (`DWIDTH`).
 
 ### Parameter Declarations
 
-- **AWIDTH**: Address width (default value: 4)
-- **DWIDTH**: Data width (default value: 4)
+our fifo is in size of 16. // 2**AWIDTH(4)
+
 
 ### Port Declarations
 
@@ -27,28 +29,19 @@ The `fifo` module is a parameterized FIFO buffer, which allows for temporary sto
   - `empty`: Empty flag, indicates if the FIFO is empty (active high).
   - `data_out`: Data output bus of width `DWIDTH`, registered output.
 
-### Internal Variable Declarations
 
-- **Local Parameters**:
-  - `DEPTH`: Depth of the FIFO memory, calculated as `2^AWIDTH`.
-
-- **Registers**:
-  - `mem[0:DEPTH-1]`: Memory array for storing the data, with `DEPTH` number of entries, each of width `DWIDTH`.
-  - `wptr`: Write pointer of width `AWIDTH`.
-  - `rptr`: Read pointer of width `AWIDTH`.
-  - `wrote`: Status flag indicating if the last operation was a write operation.
 
 ### Functional Description
 
-- **Reset Behavior**: On a reset (`rst`), the read pointer (`rptr`), write pointer (`wptr`), and the write status flag (`wrote`) are reset to zero.
+- **Reset Behavior**: On a reset (`rst`), a- on reast full equal to zero , empty equal to one!!!.
   
-- **Write Operation**: When `write_en` is asserted and the FIFO is not full, the data from `data_in` is written to the memory at the location pointed to by `wptr`, then the write pointer (`wptr`) is incremented by one, and the write status flag (`wrote`) is set to one.
+- **Write Operation**: When `write_en` is asserted and the FIFO is not full, the data from `data_in` is written to the memory.
 
-- **Read Operation**: When `read_en` is asserted and the FIFO is not empty, the data from the memory at the location pointed to by `rptr` is assigned to `data_out`, the read pointer (`rptr`) is incremented by one, and the write status flag (`wrote`) is cleared to zero.
+- **Read Operation**: When `read_en` is asserted and the FIFO is not empty, pop the first data.
 
-- **Empty Flag (`empty`)**: The FIFO is considered empty when the read and write pointers are equal and the last operation was not a write (`wrote` is zero).
+- **Empty Flag (`empty`)**: The FIFO is considered empty when the fifo is empty from data.
 
-- **Full Flag (`full`)**: The FIFO is considered full when the read and write pointers are equal and the last operation was a write (`wrote` is one).
+- **Full Flag (`full`)**: The FIFO is considered full when all cell are with data.
 
 ### Timing Diagram Example
 
@@ -73,8 +66,4 @@ In this example:
 
 ### Important Notes
 
-- The FIFO module uses a simple read and write pointer mechanism to manage data flow.
-- It is crucial to ensure proper synchronization of the control signals (`write_en`, `read_en`) with the clock (`clk`) to avoid any potential data corruption.
 - The FIFO does not handle simultaneous read and write operations. The logic should be designed to avoid asserting both `read_en` and `write_en` at the same time, unless additional handling is implemented.
-
-This specification sheet should provide a clear overview of the FIFO module's functionality, parameters, and typical usage within a digital system.
