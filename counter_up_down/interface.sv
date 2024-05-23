@@ -1,11 +1,11 @@
 interface inf(input logic clk, rst);
 
-//declare the signals
-    logic [7:0] data_in;
-    logic load;
-    logic enable;
-    logic [7:0] count;
+	// declare the signals
+	logic up_down,load;
+	logic [7:0] data_in;
+	logic [7:0] count;
 
-    modport DUT(input data_in, load, enable, clk, rst, output count);
-
-endinterface //inf
+	// modport for the DUT module - decide ports directions
+	modport DUT(input clk, rst, up_down, load, data_in, output count);
+	
+endinterface

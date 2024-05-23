@@ -3,8 +3,7 @@ Counter DUT Specification Sheet
 
 2. Description:
 
-This document specifies the functional interface of a counter DUT (Design Under Test). The DUT implements an 8-bit counter
- with reset and load functionalities.
+This document specifies the functional interface of a counter DUT (Design Under Test). The DUT implements an 8-bit counter with reset and load functionalities.
 
 3. Ports:
 

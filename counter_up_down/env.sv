@@ -1,27 +1,29 @@
+// environment class - create the driver
 class env extends uvm_env;
 
-`uvm_component_utils(env)
+	`uvm_component_utils(env)
+	
+	my_agent_out agnt_out;
+	my_agent agnt_in;
+	scoreboard sb;
 
-//declare the agents and the scoreboard
+	function new(string name, uvm_component parent);
+		super.new(name, parent);
+	endfunction
+	
+	function void build_phase(uvm_phase phase);
+		super.build_phase(phase);
+		agnt_out = my_agent_out::type_id::create("agnt_out", this);
+		agnt_in = my_agent::type_id::create("agnt_in", this);
+		sb = scoreboard::type_id::create("sb", this);
+	endfunction
 
-agent_in age_in;
-agent_out age_out;
-scoreboard scb;
+	function void connect_phase(uvm_phase phase);
+		super.connect_phase(phase);
+		agnt_in.agnt_in_ap.connect(sb.scb_port_in);
+		agnt_out.agnt_ap_out.connect(sb.scb_port_out);
+	endfunction
 
-function new(string name = "env", uvm_component parent);
-    super.new(name, parent);
-endfunction
+	
 
-function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
-    age_in = agent_in::type_id::create("age_in", this);
-    age_out = agent_out::type_id::create("age_out", this);
-    scb = scoreboard::type_id::create("scb", this);
-endfunction
-
-function void connect_phase(uvm_phase phase);
-    super.connect_phase(phase);
-    age_in.agent_in_port.connect(scb.scb_port_in);
-    age_out.agent_out_port.connect(scb.scb_port_out);
-endfunction
 endclass
