@@ -1,11 +1,15 @@
 // calss transaction uvm sqeuence item
 
-parameter int ADDAR_WIDTH = 2;
-parameter int DATA_WIDTH = 8;
 
-class my_transaction extends uvm_sequence_item;
+
+class my_transaction extends uvm_sequence_item
+  
     // input port
-   
+   #(
+    parameter int ADDAR_WIDTH = 2
+    parameter int DATA_WIDTH = 8
+    );
+
     //Address for writing or reading
     rand bit [ADDAR_WIDTH-1:0] addr;
     //write data drive by master
