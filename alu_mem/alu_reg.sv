@@ -1,6 +1,8 @@
 //this class is used to store the data of the ALU register and the memory
 
-class alu_reg (parameter int DATA_WIDTH = 8, parameter int ADDR_WIDTH = 2);
+class alu_reg 
+#(parameter int DATA_WIDTH = 8, parameter int ADDR_WIDTH = 2)
+(my_transaction);
 
 logic [ADDR_WIDTH-1:0] my_reg [DATA_WIDTH-1:0];
 

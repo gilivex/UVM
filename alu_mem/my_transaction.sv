@@ -23,6 +23,10 @@ class my_transaction extends uvm_sequence_item
     bit [DATA_WIDTH-1:0] rd_data;
    //output result
     bit [16-1:0] res_out = 0;
+
+    // bit to determine if the transaction data is valid or not 
+    // we use it in the scoreboard and the reference model
+    bit is_data_valid = 0;
     
 
     // `uvm_object_utils(my_transaction);

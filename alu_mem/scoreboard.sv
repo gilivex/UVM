@@ -38,38 +38,35 @@ endfunction
 function void connect_phase(uvm_phase phase);
 endfunction
 
-
-
 virtual function void write_port_in(my_transaction trans);
 trans_in.wr_data = trans.wr_data;
 trans_in.rd_wr = trans.rd_wr;
 trans_in.enable = trans.enable;
 trans_in.addr = trans.addr;
 
-
 trans_ref = ref_m.step(trans_in);
 my_fifo.push_back(trans_ref);
 endfunction
 
 virtual function void write_port_out(my_transaction trans);
-trans_out.full = trans.full;
-trans_out.empty = trans.empty;
-trans_out.data_out = trans.data_out;
-
+trans_out.rd_data = trans.rd_data;
+trans_out.res_out = trans.res_out;
 compare(trans_out, my_fifo.pop_front());
 endfunction
 
+//compare the output of the DUT with the output of the reference model
 virtual function void compare(my_transaction dut_out, my_transaction ref_out);
-    // if((dut_out.empty != ref_out.empty) || (dut_out.full != ref_out.full)) begin
+   
+    if(dut_out.res_out != ref_out.res_out) begin
         `uvm_warning("", "TEST FAILED")
-    
-         if (ref_out.is_data_valid)
-            if(dut_out.data_out != ref_out.data_out)
+    end
+    else `uvm_info(get_type_name(), "TEST PASSED", UVM_LOW)
+
+       if(dut_out.is_data_valid == 1)
+        if(dut_out.rd_data != ref_out.rd_data)
         `uvm_warning("", "TEST FAILED")
             else
         `uvm_info(get_type_name(), "TEST PASSED", UVM_LOW)
-    end
-    else
-        `uvm_info(get_type_name(), "TEST PASSED", UVM_LOW)
+    
     endfunction
 endclass
