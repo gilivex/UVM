@@ -1,3 +1,5 @@
+`include "my_coverage.sv"
+
 class monitor_in extends uvm_monitor;
     `uvm_component_utils (monitor_in)
 
@@ -10,7 +12,7 @@ class monitor_in extends uvm_monitor;
     //For coverage
     my_transaction my_tran_cov;
     //Define coverpoints
-    // covergroup adder_cov;
+    my_coverage cov;
     //     cov_a: coverpoint my_tran_cov.a;
     //     cov_b: coverpoint my_tran_cov.b;
     //     cov_ab: cross cov_a, cov_b;
@@ -18,14 +20,14 @@ class monitor_in extends uvm_monitor;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
-        // my_tran_cov = new(); 
-        // adder_cov = new();
+        cov = new();
     endfunction
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         uvm_config_db#(virtual inf)::get(this,"","inf",vinf);
         mon_in_ap = new("mon_in_ap", this);
+        my_tran_cov = new();
     endfunction
 
 
@@ -44,8 +46,9 @@ class monitor_in extends uvm_monitor;
                 my_tran.rst = vinf.rst;
 
                 // for coverage
-                // my_tran_cov = my_tran;
-                // adder_cov.sample();
+                my_tran_cov = my_tran;
+                my_tran_cov.count = vinf.count;
+                cov.sample(my_tran_cov);
                 //`uvm_info(" ", $sformatf("Monitor expected enable=%0d, a=%0d, b=%0d, sum=%d", vinf.enable,vinf.a, vinf.b, vinf.sum), UVM_MEDIUM);
                 //send the transaction to the analysis port
                 // @(posedge vinf.clk);

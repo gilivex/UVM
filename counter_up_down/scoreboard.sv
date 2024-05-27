@@ -28,7 +28,6 @@ class scoreboard extends uvm_scoreboard;
     endfunction
 
 
-
     function void connect_phase(uvm_phase phase);
     endfunction
 
@@ -72,7 +71,6 @@ class scoreboard extends uvm_scoreboard;
     task print_ignore();
         `uvm_info("", {"test: Ignore!"}, UVM_LOW)
     endtask
-
 
    endclass 
    
