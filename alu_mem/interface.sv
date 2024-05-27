@@ -1,5 +1,4 @@
-parameter int 
-parameter int DATA_WIDTH = 8;
+
 interface inf #(
     parameter int ADDAR_WIDTH = 2
     parameter int DATA_WIDTH = 8)

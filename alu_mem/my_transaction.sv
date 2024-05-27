@@ -1,7 +1,5 @@
 // calss transaction uvm sqeuence item
 
-
-
 class my_transaction extends uvm_sequence_item
   
     // input port
