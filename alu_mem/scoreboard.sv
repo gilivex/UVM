@@ -1,8 +1,7 @@
 `uvm_analysis_imp_decl(_port_in)
 `uvm_analysis_imp_decl(_port_out)
-`include "ref_model.sv"
+`include "ref_modle.sv"
 //define enum type for max size of fifo and min size of fifo
-typedef enum {MIN_SIZE = 0, MAX_SIZE = 16} fifo_size_enum;
 
 class scoreboard extends uvm_scoreboard;
 
@@ -39,18 +38,24 @@ function void connect_phase(uvm_phase phase);
 endfunction
 
 virtual function void write_port_in(my_transaction trans);
-trans_in.wr_data = trans.wr_data;
-trans_in.rd_wr = trans.rd_wr;
-trans_in.enable = trans.enable;
-trans_in.addr = trans.addr;
-
-trans_ref = ref_m.step(trans_in);
+// trans_in.wr_data = trans.wr_data;
+// trans_in.rd_wr = trans.rd_wr;
+// trans_in.enable = trans.enable;
+// trans_in.addr = trans.addr;
+//  
+// trans_ref = ref_m.step(trans_in);
+trans_ref = ref_m.step(trans);
 my_fifo.push_back(trans_ref);
 endfunction
 
 virtual function void write_port_out(my_transaction trans);
+// if fifo is empty then wait for the data to be ready
+
 trans_out.rd_data = trans.rd_data;
 trans_out.res_out = trans.res_out;
+  if(my_fifo.size() == 0)
+        `uvm_info(get_type_name(), "FIFO is empty", UVM_LOW)
+  else
 compare(trans_out, my_fifo.pop_front());
 endfunction
 

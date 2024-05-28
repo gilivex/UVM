@@ -1,17 +1,14 @@
 // calss transaction uvm sqeuence item
 
-class my_transaction extends uvm_sequence_item
-  
-    // input port
-   #(
-    parameter int ADDAR_WIDTH = 2
-    parameter int DATA_WIDTH = 8
-    );
+class my_transaction extends uvm_sequence_item;
+
+    parameter int ADDAR_WIDTH = 2;
+    parameter int DATA_WIDTH = 8;
 
     //Address for writing or reading
     rand bit [ADDAR_WIDTH-1:0] addr;
     //write data drive by master
-    rand bit wr_data;
+    rand bit [DATA_WIDTH-1:0] wr_data;
     // 0-write, 1-read
     rand bit rd_wr;
     //enable for write or read
@@ -23,6 +20,7 @@ class my_transaction extends uvm_sequence_item
     bit [DATA_WIDTH-1:0] rd_data;
    //output result
     bit [16-1:0] res_out = 0;
+    bit reset = 0;
 
     // bit to determine if the transaction data is valid or not 
     // we use it in the scoreboard and the reference model

@@ -1,86 +1,99 @@
 `include "alu_reg.sv"
 
-class ref_model #(logic [ADDR_WIDTH-1:0] my_reg [DATA_WIDTH-1:0];
-);
+class ref_model;
 
-    my_transaction t_out;
+    // my_transaction t_out;
     //store the previous result
-    bit [16-1:0] old_res ;
+    bit [16-1:0] old_res =0 ;
 
     alu_reg alu_reg_inst;
 
     //constructor
     function new();
-        my_transaction t_out = new();
+        // t_out = new();
         alu_reg_inst = new();
+        old_res = 0;
     endfunction
 
+// our "main" function that will be called by the scoreboard and  
     function my_transaction step(my_transaction t_in);
-    this.t_out = t_in;
-    this.t_out.is_data_valid = 0;
-    if(t_in.reset == 1) begin
-        alu_reg_inst.reset();
-        t_out.rd_data = 0;
-        t_out.res_out = 0;
-        return t_out;
+    if(t_in.reset == 1) 
+        return reset(t_in);
+        if(t_in.enable == 1) begin
+            //write mode
+            if(t_in.rd_wr == 0) 
+            write_to_alu(t_in);
+            // sending the t_in transaction to the read function and reciving an update transaction 
+            // from the function
+            else
+            t_in = read_to_alu(t_in);
+        // there always will be an execute operation 0/1 not depending on the rest of the memory operations
+       t_in = execute(t_in);
+            return t_in;   
     end
+    return t_in;
    endfunction
+ // function for reset  
+function my_transaction reset(my_transaction t_in);
+    alu_reg_inst.reset();
+    t_in.rd_data = 0;
+    t_in.res_out = 0;
+    old_res = 0;
+    return t_in;
+    endfunction
 
 // function for write data
-function void read_write(my_transaction t_in);
+function void write_to_alu(my_transaction t_in);
 //write mode
-if(t_in.enable == 1) begin
-    if(t_in.rd_wr == 0)begin
-        if(t_in.addr<2)
+        if(t_in.addr < 2)begin
             alu_reg_inst.write_reg(t_in.addr, t_in.wr_data);
-        else if (t_in.addr==2)
+        if (t_in.addr == 2)
                 alu_reg_inst.write_reg(t_in.addr, t_in.wr_data[2:0]);
-        else if (t_in.addr==3)
+        if (t_in.addr == 3)
                 alu_reg_inst.write_reg(t_in.addr, t_in.wr_data[0]);
-        end
-    else begin
-        alu_reg_inst.read_reg(t_in.addr, t_out.rd_data);
-        t_out.is_data_valid = 1;
-        end
-
-end
+        end 
+endfunction
+//function for read data
+function my_transaction read_to_alu(my_transaction t_in);
+        t_in.rd_data = alu_reg_inst.read_reg(t_in.addr);
+        //very important to set the data valid flag to 1 confirm that
+        // the data is valid and we can take this transaction as a valid transaction
+        t_in.is_data_valid = 1;
+        return t_in;
 endfunction
 
-
-function void execute(my_transaction t_in);
-if(t_in.addr == 3 ) begin
-    if(t_in.data == 0)
+// function for execute the alu operation if execute is 1
+function my_transaction execute(my_transaction t_in);
+    if(alu_reg_inst.is_exc_on() == 0)begin
         t_in.res_out = old_res;
-    if(t_in.data == 1)
-      oper(t_in);
-end
+        return t_in;
+    end else
+      return oper(t_in);
+
     endfunction
 
 // function for opertion 
- function void oper(my_transaction t_in);
-    if(t_in.addr == 2 ) begin
-        case (t_in.data_in)
-            0: 
-                t_out.res_out= 0;
-            1:
-                t_out.res_out = t_in.A + t_in.B;
-                old_res = t_out.res_out;
-            2:
-                t_out.res_out = t_in.A - t_in.B;
-                old_res = t_out.res_out;
-            3:
-                t_out.res_out = t_in.A * t_in.B;
-                old_res = t_out.res_out;
-            4:
-                if(t_in.B != 0) 
-                    t_out.res_out = t_in.A / t_in.B;
+ function my_transaction oper(my_transaction t_in);
+  begin
+         case (alu_reg_inst.read_reg(2)[2:0])
+            0: t_in.res_out = 0;
+
+            1: t_in.res_out = alu_reg_inst.read_reg(0) + alu_reg_inst.read_reg(1);
+
+            2: t_in.res_out = alu_reg_inst.read_reg(0) - alu_reg_inst.read_reg(1);
+
+            3: t_in.res_out = alu_reg_inst.read_reg(0) * alu_reg_inst.read_reg(1);
+
+            4: if(alu_reg_inst.read_reg(1) != 0) 
+                t_in.res_out = alu_reg_inst.read_reg(0) / alu_reg_inst.read_reg(1);
                 else
-                    t_out.res_out = 16'hdead;
-                    old_res = t_out.res_out;
-            default:    
-                t_out.res_out = old_res;
-        endcase
-        return;
+                t_in.res_out = 16'hdead;
+
+            default: t_in.res_out = old_res;
+  endcase
+              old_res = t_in.res_out;
+
+        return t_in;
         end
 
     endfunction

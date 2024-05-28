@@ -23,6 +23,7 @@ class monitor_out extends uvm_monitor;
 
         my_tran = my_transaction::type_id::create("my_tran", this);
         next_is_valid = 0;
+
             forever begin
                 // fork the process to wait for the enable signal
                 @(posedge vinf.clk);
@@ -30,7 +31,7 @@ class monitor_out extends uvm_monitor;
                     // wait for the enable signal
                     begin
                         #2ps;//wait for 3ns to make sure the signal is stable
-                        if(vinf.write_en == 1'b1 || vinf.read_en == 1'b1 || vinf.rst == 1'b1) begin
+                        if(vinf.enable == 1 || vinf.reset == 1) begin // 
                             next_is_valid = 1;
                         end
                         else begin
@@ -40,9 +41,8 @@ class monitor_out extends uvm_monitor;
                
                     begin
                         if(next_is_valid) begin
-                            my_tran.full = vinf.full;
-                            my_tran.empty = vinf.empty;
-                            my_tran.data_out = vinf.data_out;
+                            my_tran.rd_data = vinf.rd_data;
+                            my_tran.res_out = vinf.res_out;
                             //send the transaction to the analysis port
                             sum_of_trans_out++;
                             mon_out_ap.write(my_tran);
