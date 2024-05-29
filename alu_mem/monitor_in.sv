@@ -30,10 +30,8 @@ class monitor_in extends uvm_monitor;
   
         forever begin 
    
-            @(posedge vinf.clk);
-               #1ps;
-            if(vinf.reset == 1 || vinf.enable == 1) 
-             begin 
+                @(vinf.reset or vinf.rd_wr or vinf.enable or vinf.addr or vinf.wr_data) begin
+                    
                 my_tran.reset <= vinf.reset;
                 my_tran.rd_wr <= vinf.rd_wr;
                 my_tran.enable <= vinf.enable;   

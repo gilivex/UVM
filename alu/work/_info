@@ -22,6 +22,10 @@ R0
 R0
 R0
 R0
+R0
+R0
+R0
+R0
 !s11f vlog 2023.4 2023.10, Oct  9 2023
 13
 !s112 1.1
@@ -33,7 +37,7 @@ Z1 dC:/Users/USER001/Desktop/Gil/Lab/UVM_EX/UVM/alu
 vALU
 Z2 2alu.v|my_pkg.svh|interface.sv|top.sv
 Z3 DXx6 sv_std 3 std 0 22 9oUSJO;AeEaW`l:M@^WG92
-Z4 !s110 1716997120
+Z4 !s110 1717000404
 !i10b 1
 !s100 R8lI8E7XzH2Ja8lo]dQkk2
 IgIYkK3`dV38JJIBHhNKNV0
@@ -42,14 +46,14 @@ R1
 w1716919006
 8alu.v
 Falu.v
-!i122 34
+!i122 38
 L0 2 29
 Z5 VDg1SIo80bB@j0V0VzS_@n1
 Z6 OL;L;2023.4;77
 r1
 !s85 0
 31
-Z7 !s108 1716997120.000000
+Z7 !s108 1717000403.000000
 Z8 !s107 random_test.sv|env.sv|ref_model.sv|scoreboard.sv|my_agent_out.sv|my_agent.sv|my_driver.sv|monitor_out.sv|monitor_in.sv|my_sequence.sv|my_sequencer.sv|my_transaction.sv|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_deprecated_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_reg_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_callback_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_sequence_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/tlm1/uvm_tlm_imps.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_tlm_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_printer_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_object_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_phase_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_message_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/macros/uvm_version_defines.svh|C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/uvm_macros.svh|top.sv|interface.sv|my_pkg.svh|alu.v|
 Z9 !s90 -reportprogress|300|alu.v|my_pkg.svh|interface.sv|top.sv|
 !i113 0
@@ -68,7 +72,7 @@ R1
 w1716918844
 8interface.sv
 Finterface.sv
-!i122 34
+!i122 38
 Z12 L0 2 0
 R5
 R6
@@ -89,11 +93,11 @@ R3
 Z13 DXx6 mtiUvm 7 uvm_pkg 0 22 8V[`8]Q0W57le7Z>zYaAj1
 R4
 !i10b 1
-!s100 K>IHhB5=5:I^Ze93:AOM22
-IIHJUm^QD`VcL;CKgEfDoK1
+!s100 5ZASbgnica_XgFH2BjjZI3
+IJlcPiQB@Xg83LYi:_Z;SV1
 S1
 R1
-w1716997112
+w1717000396
 8my_pkg.svh
 Fmy_pkg.svh
 FC:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d/../verilog_src/uvm-1.1d/src/uvm_macros.svh
@@ -120,9 +124,9 @@ Fscoreboard.sv
 Fref_model.sv
 Fenv.sv
 Frandom_test.sv
-!i122 34
+!i122 38
 R12
-VIHJUm^QD`VcL;CKgEfDoK1
+VJlcPiQB@Xg83LYi:_Z;SV1
 R6
 r1
 !s85 0
@@ -136,8 +140,8 @@ R11
 Topt_test
 !s11d my_pkg C:/Users/USER001/Desktop/Gil/Lab/UVM_EX/UVM/alu/work 1 inf 1 C:/Users/USER001/Desktop/Gil/Lab/UVM_EX/UVM/alu/work 
 !s11d uvm_pkg C:/Users/USER001/Desktop/Gil/QUESTA/uvm-1.1d 1 inf 1 C:/Users/USER001/Desktop/Gil/Lab/UVM_EX/UVM/alu/work 
-!s110 1716997121
-V>kXNkS4AJLOFWA<QX9=2[2
+!s110 1717000405
+V=V5lk;aB[QQM0@>cf8bgi3
 04 3 4 work top fast 0
 R0
 !s12f OEM100
@@ -151,7 +155,7 @@ vtop
 R2
 R3
 R13
-DXx4 work 6 my_pkg 0 22 IHJUm^QD`VcL;CKgEfDoK1
+DXx4 work 6 my_pkg 0 22 JlcPiQB@Xg83LYi:_Z;SV1
 R4
 !i10b 1
 !s100 N7MMeJ1eBzG73a4=_KR_C2
@@ -161,7 +165,7 @@ R1
 w1716996173
 8top.sv
 Ftop.sv
-!i122 34
+!i122 38
 L0 7 26
 R5
 R6

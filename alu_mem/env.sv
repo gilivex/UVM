@@ -2,7 +2,7 @@
 class env extends uvm_env;
 
 	`uvm_component_utils(env)
-	
+	my_agent_res agnt_res;
 	my_agent_out agnt_out;
 	my_agent agnt_in;
 	scoreboard sb;
@@ -13,6 +13,7 @@ class env extends uvm_env;
 	
 	function void build_phase(uvm_phase phase);
 		super.build_phase(phase);
+		agnt_res = my_agent_res::type_id::create("agnt_res", this);
 		agnt_out = my_agent_out::type_id::create("agnt_out", this);
 		agnt_in = my_agent::type_id::create("agnt_in", this);
 		sb = scoreboard::type_id::create("sb", this);
@@ -22,6 +23,7 @@ class env extends uvm_env;
 		super.connect_phase(phase);
 		agnt_in.agnt_in_ap.connect(sb.scb_port_in);
 		agnt_out.agnt_ap_out.connect(sb.scb_port_out);
+		agnt_res.agnt_ap_res.connect(sb.scb_port_out_res);
 	endfunction
 
 	

@@ -21,35 +21,47 @@ class monitor_out extends uvm_monitor;
 
     task run_phase(uvm_phase phase);
 
-        my_tran = my_transaction::type_id::create("my_tran", this);
+        my_transaction tr = new();
         next_is_valid = 0;
 
-            forever begin
+           forever begin
+            @(vinf.rd_data)
+            
+            tr.rd_data = vinf.rd_data;
+            mon_out_ap.write(tr);
+            sum_of_trans_out++;
+        end
+    
+
+
+
+           
+            // forever begin
                 // fork the process to wait for the enable signal
-                @(posedge vinf.clk);
-                fork
-                    // wait for the enable signal
-                    begin
-                        #2ps;//wait for 3ns to make sure the signal is stable
-                        if(vinf.enable == 1 || vinf.reset == 1) begin // 
-                            next_is_valid = 1;
-                        end
-                        else begin
-                            next_is_valid = 0;
-                        end
-                    end
+                // @(posedge vinf.clk);
+                // fork
+                //     // wait for the enable signal
+                //     begin
+                //         #2ps;//wait for 3ns to make sure the signal is stable
+                //         if(vinf.enable == 1 || vinf.reset == 1) begin // 
+                //             next_is_valid = 1;
+                //         end
+                //         else begin
+                //             next_is_valid = 0;
+                //         end
+                //     end
                
-                    begin
-                        if(next_is_valid) begin
-                            my_tran.rd_data = vinf.rd_data;
-                            my_tran.res_out = vinf.res_out;
-                            //send the transaction to the analysis port
-                            sum_of_trans_out++;
-                            mon_out_ap.write(my_tran);
-                        end
-                    end 
-                join;
-            end 
+                //     begin
+                //         if(next_is_valid) begin
+                //             my_tran.rd_data = vinf.rd_data;
+                //             my_tran.res_out = vinf.res_out;
+                //             //send the transaction to the analysis port
+                //             sum_of_trans_out++;
+                //             mon_out_ap.write(my_tran);
+                //         end
+                //     end 
+                // join;
+            // end 
         
     endtask
 

@@ -10,11 +10,13 @@ package my_pkg;
 
 	`include "monitor_in.sv"
 	`include "monitor_out.sv"
+	`include "monitor_out_res.sv"
 
 	`include "my_driver.sv"
 
 	`include "my_agent.sv"
 	`include "my_agent_out.sv"
+	`include "my_agent_res.sv"
 
 	`include "scoreboard.sv"
 	

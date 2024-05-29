@@ -12,7 +12,7 @@ module top;
 	
 	initial begin
 		reset = 1;
-		#5 reset = 0;
+		#10 reset = 0;
 	end
 	
 	// instantiate interface
