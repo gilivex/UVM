@@ -16,16 +16,16 @@ int sum_of_trans_in=0;
     endfunction
 
 task run_phase(uvm_phase phase);
-
 my_transaction tr;
 tr = new();
 
 forever begin
-    
-@(vinf.A or vinf.B or vinf.mode)begin
+
+@(vinf.A or vinf.B or vinf.mode or vinf.rst_n)begin
     tr.A = vinf.A;
     tr.B = vinf.B;
     tr.mode = vinf.mode;
+    tr.rst_n = vinf.rst_n;
     mon_in_ap.write(tr);
     sum_of_trans_in++;
 end

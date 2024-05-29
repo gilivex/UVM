@@ -1,7 +1,7 @@
 # clean the previous compiled files and quit previous simulation
 .main clear
 # recompile the files
-vlog ALU_fixed.svp my_pkg.svh interface.sv top.sv
+vlog alu.v my_pkg.svh interface.sv top.sv
 
 # start the simulation
 vopt +acc top -o opt_test

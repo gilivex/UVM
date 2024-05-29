@@ -4,7 +4,7 @@ class ref_model;
  function my_transaction step(my_transaction tr);
 
 // reset 
- if (tr.rst_n) begin
+ if (!tr.rst_n) begin
     tr.Y = 0;
     return tr;
  end

@@ -1,7 +1,8 @@
 // top module test bench - import package (header.sv)
 `include "interface.sv"
-// `include "alu.v"
-`include "ALU_fixed.svp"
+`include "alu.v"
+// `include "ALU_fixed.svp"
+
 
 module top;
 	

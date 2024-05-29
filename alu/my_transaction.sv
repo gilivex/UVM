@@ -2,7 +2,7 @@
 
 class my_transaction extends uvm_sequence_item;
  
-    bit rst_n;
+    bit rst_n =1;
     rand bit  [3:0] A, B;
     rand bit  [1:0] mode;
     bit [4:0] Y;
