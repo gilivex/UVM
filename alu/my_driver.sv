@@ -22,10 +22,9 @@ class my_driver extends uvm_driver#(my_transaction);
 		forever begin
 			seq_item_port.get_next_item(trans);
 			@(posedge vinf.clk) begin				
-			vinf.a = trans.a;
-            vinf.b = trans.b;
-            vinf.mode = trans.mode;
-				//`uvm_info("", $sformatf("driver: enable=%0d, a=%0d, b=%0d", vinf.enable, vinf.a, vinf.b), UVM_MEDIUM)
+				vinf.A <= trans.A;
+				vinf.B <= trans.B;
+				vinf.mode <= trans.mode;
 			seq_item_port.item_done();
 
 			end

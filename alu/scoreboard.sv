@@ -1,8 +1,6 @@
 `uvm_analysis_imp_decl(_port_in)
 `uvm_analysis_imp_decl(_port_out)
 `include "ref_model.sv"
-//define enum type for max size of fifo and min size of fifo
-typedef enum {MIN_SIZE = 0, MAX_SIZE = 16} fifo_size_enum;
 
 class scoreboard extends uvm_scoreboard;
 
@@ -11,22 +9,14 @@ class scoreboard extends uvm_scoreboard;
 uvm_analysis_imp_port_in#(my_transaction, scoreboard) scb_port_in;
 uvm_analysis_imp_port_out#(my_transaction, scoreboard) scb_port_out;
 
-ref_model ref_m;
-my_transaction trans_ref;
-my_transaction trans_in;
-my_transaction trans_out;
 int num_of_trans_in = 0;
 int num_of_trans_out = 0;
-// int fifo_size = 0;
 my_transaction my_fifo[$];
+ref_model ref_m;
 
 function new(string name = "scoreboard", uvm_component parent);
     super.new(name, parent);
-    trans_ref = new("trans_ref");
-    trans_in = new("trans_in");
-    trans_out = new("trans_out");
     ref_m = new();
-
 endfunction
 
 function void build_phase(uvm_phase phase);
@@ -39,30 +29,34 @@ function void connect_phase(uvm_phase phase);
 endfunction
 
 virtual function void write_port_in(my_transaction trans);
-trans_in.a = trans.a;
-trans_in.b = trans.b;
-trans_in.mode = trans.mode;
-
-trans_ref = ref_m.step(trans_in);
-my_fifo.push_back(trans_ref);
+my_transaction tr;
+tr = new();
+if(my_fifo.size() != 0) begin
+    tr = my_fifo.pop_front();
+    my_fifo.push_front(tr);
+    if(tr.Y != trans.Y) begin
+        my_fifo.push_back(ref_m.step(trans));
+    end
+end
+else
+    my_fifo.push_back(ref_m.step(trans));
 endfunction
 
 virtual function void write_port_out(my_transaction trans);
-trans_out.out = trans.out;
-compare(trans_out, my_fifo.pop_front());
+    my_transaction temp;
+    temp = my_fifo.pop_front();
+    compare(trans.Y,temp.Y , temp);
 endfunction
 
-virtual function void compare(my_transaction dut_out, my_transaction ref_out);
-    // if((dut_out.empty != ref_out.empty) || (dut_out.full != ref_out.full)) begin
+virtual function void compare(bit[4:0] dut_out, bit[4:0] ref_out ,my_transaction tr);
+    if(dut_out != ref_out) begin
         `uvm_warning("", "TEST FAILED")
-    
-         if (ref_out.is_data_valid)
-            if(dut_out.out != ref_out.out)
-        `uvm_warning("", "TEST FAILED")
-            else
-        `uvm_info(get_type_name(), "TEST PASSED", UVM_LOW)
+        tr.print();
+        $display("dut Y = ", dut_out);
+        $display("ref Y = ", ref_out);
     end
     else
         `uvm_info(get_type_name(), "TEST PASSED", UVM_LOW)
-    endfunction
+    
+endfunction
 endclass

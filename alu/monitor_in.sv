@@ -1,38 +1,35 @@
 class monitor_in extends uvm_monitor;
-    `uvm_component_utils (monitor_in)
+  `uvm_component_utils(monitor_in)
+  uvm_analysis_port#(my_transaction) mon_in_ap;
 
-    uvm_analysis_port# (my_transaction) mon_in_ap; // monitor analysis port
+  virtual inf vinf;
+int sum_of_trans_in=0;
 
-    virtual inf vinf;
-    int sum_of_trans_in = 0;
-    my_transaction my_tran;
-
-    function new(string name, uvm_component parent);
-        super.new(name, parent);
-    endfunction
+  function new(string name, uvm_component parent);
+    super.new(name, parent);
+  endfunction
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        uvm_config_db#(virtual inf)::get(this,"","inf",vinf);
+        uvm_config_db#(virtual inf)::get(this, "", "inf", vinf);
         mon_in_ap = new("mon_in_ap", this);
     endfunction
 
-    task run_phase(uvm_phase phase);
-        my_tran = my_transaction::type_id::create("my_tran", this);
+task run_phase(uvm_phase phase);
 
-        forever begin 
-   
-            @(posedge vinf.clk);
-               #1ps;
-            // if(vinf.write_en == 1'b1 || vinf.read_en == 1'b1 || vinf.rst == 1'b1)
-             begin 
-                my_tran.a = vinf.a;
-                my_tran.b = vinf.b;
-                my_tran.mode = vinf.mode;
-                                
-                mon_in_ap.write(my_tran);
-                sum_of_trans_in++;
-            end
-        end
-    endtask
+my_transaction tr;
+tr = new();
+
+forever begin
+    
+@(vinf.A or vinf.B or vinf.mode)begin
+    tr.A = vinf.A;
+    tr.B = vinf.B;
+    tr.mode = vinf.mode;
+    mon_in_ap.write(tr);
+    sum_of_trans_in++;
+end
+end
+
+endtask
 endclass
