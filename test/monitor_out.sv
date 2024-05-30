@@ -28,7 +28,7 @@ class monitor_out extends uvm_monitor;
            #dur *1.5;
              begin
                 for(int i=0; i<8; i++)begin
-                    my_tran.data_in[i] = vinf.get_bit;
+                    my_tran.data_out[i] = vinf.get_bit;
                     #dur;
                 end
                 if(vinf.get_bit !=1)
