@@ -5,9 +5,9 @@ class monitor_out extends uvm_monitor;
 
     virtual inf vinf;
     my_transaction my_tran;
-    bit next_is_valid = 0;
     int sum_of_trans_out = 0;
     time dur = 8700ns;
+    
     function new (string name, uvm_component parent);
         super.new (name, parent) ;
     endfunction
