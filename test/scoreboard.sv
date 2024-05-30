@@ -1,6 +1,5 @@
 `uvm_analysis_imp_decl(_port_in)
 `uvm_analysis_imp_decl(_port_out)
-`include "ref_model.sv"
 
 class scoreboard extends uvm_scoreboard;
 
@@ -12,13 +11,16 @@ uvm_analysis_imp_port_out#(my_transaction, scoreboard) scb_port_out;
 int num_of_trans_in = 0;
 int num_of_trans_out = 0;
 my_transaction my_fifo[$];
-ref_model ref_m;
 my_transaction last_trans;
+// bit all_passad = 1;
+virtual inf vinf;
+bit [7:0] temp = 0;
 
+int local_p = 0;
+my_transaction temp_trans_in;
 
 function new(string name = "scoreboard", uvm_component parent);
     super.new(name, parent);
-    ref_m = new();
     last_trans = new();
 endfunction
 
@@ -31,13 +33,19 @@ endfunction
 function void connect_phase(uvm_phase phase);
 endfunction
 
-virtual function void write_port_in(my_transaction trans);
+ 
+	virtual function void write_port_in(my_transaction trans);
+    temp_trans_in.data_out[local_p] = trans.get_bit;  
+    if(local_p == 7)begin
+        local_p = 0;
+    	my_fifo.push_back(temp_trans_in);
+	end
+    local_p++;
 
-    my_fifo.push_back(trans);
-  
 endfunction
 
 virtual function void write_port_out(my_transaction trans);
+   
     if(my_fifo.size()!= 0)begin
          last_trans = my_fifo.pop_front();
         compare(trans,last_trans);
@@ -51,8 +59,8 @@ virtual function void compare(my_transaction dut_out, my_transaction ref_out);
     if(dut_out.data_out != ref_out.data_out) begin
         `uvm_warning("", "TEST FAILED")
         // tr.print();
-        $display("dut Y = ", dut_out.Y);
-        $display("ref Y = ", ref_out.Y);
+        $display("dut Y = ", dut_out.data_out);
+        $display("ref Y = ", ref_out.data_out);
         ref_out.print();
     end
     else

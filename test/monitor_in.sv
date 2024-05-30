@@ -1,3 +1,4 @@
+`include "my_coverage.sv"
 class monitor_in extends uvm_monitor;
     `uvm_component_utils (monitor_in)
 
@@ -7,8 +8,12 @@ class monitor_in extends uvm_monitor;
     int sum_of_trans_in = 0;
     my_transaction my_tran;
     time half_dur = 4350ns;
+    time dur = 8700ns;
+    my_coverage cov;
+
     function new(string name, uvm_component parent);
         super.new(name, parent);
+        cov = new();
     endfunction
 
     function void build_phase(uvm_phase phase);
@@ -22,17 +27,19 @@ class monitor_in extends uvm_monitor;
 
         forever begin 
            @(negedge vinf.get_bit)
-           #dur *1.5;
+           # (dur *1.5);
              begin
                 for(int i=0; i<8; i++)begin
                     my_tran.data_in[i] = vinf.get_bit;
                     #dur;
                 end
                 if(vinf.get_bit !=1)
-                `uvm_error("STOP bit ERROR")
+                `uvm_error("STOP bit ERROR", "STOP bit ERROR")
                 else begin
                 mon_in_ap.write(my_tran);
                 sum_of_trans_in++;
+               cov.coverage_sample(my_tran);
+
                 end
             end
         end

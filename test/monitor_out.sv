@@ -25,14 +25,14 @@ class monitor_out extends uvm_monitor;
         
         forever begin 
            @(negedge vinf.get_bit)
-           #dur *1.5;
+           #(dur *1.5);
              begin
                 for(int i=0; i<8; i++)begin
                     my_tran.data_out[i] = vinf.get_bit;
                     #dur;
                 end
                 if(vinf.get_bit !=1)
-                `uvm_error("STOP bit ERROR")
+                `uvm_error("STOP bit ERROR", "STOP bit ERROR")
                 else begin
                     sum_of_trans_out++;
                     mon_out_ap.write(my_tran);

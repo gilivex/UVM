@@ -18,7 +18,7 @@ module top;
 	// instantiate interface
 	inf i_inf(clk, rst);
 	// fifo a1(i_inf);
-	uart c1(i_inf);
+	uart c1(.clk(clk), .reset(rst), .rx(i_inf.data_in), .tx(i_inf.data_out), .get_bit(i_inf.get_bit));
 	// run the test (random_test.sv)
 	initial begin
 		// set the virtual interface to the config_db

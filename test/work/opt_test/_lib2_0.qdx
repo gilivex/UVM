@@ -1,0 +1,6 @@
+3 118 INSERT OR REPLACE INTO mainfiles (auxid,fileid,duname,name,size,time,flags) VALUES (?,?,?,?,?,strftime('%s','now'),?); 6 0 2 0 1 2 8 opt_test 2 10 voptw25kxe 1 22759 0 267
+3 118 INSERT OR REPLACE INTO mainfiles (auxid,fileid,duname,name,size,time,flags) VALUES (?,?,?,?,?,strftime('%s','now'),?); 6 0 2 0 2 2 8 opt_test 2 10 voptq81dqb 1 735 0 267
+3 118 INSERT OR REPLACE INTO mainfiles (auxid,fileid,duname,name,size,time,flags) VALUES (?,?,?,?,?,strftime('%s','now'),?); 6 0 2 0 3 2 8 opt_test 2 10 vopteh2teq 1 1696 0 267
+3 118 INSERT OR REPLACE INTO mainfiles (auxid,fileid,duname,name,size,time,flags) VALUES (?,?,?,?,?,strftime('%s','now'),?); 6 0 2 0 4 2 8 opt_test 2 10 voptjb61mt 1 65552 0 267
+3 118 INSERT OR REPLACE INTO mainfiles (auxid,fileid,duname,name,size,time,flags) VALUES (?,?,?,?,?,strftime('%s','now'),?); 6 0 2 0 5 2 8 opt_test 2 10 vopt5t3763 1 961327 0 267
+25 125 INSERT OR REPLACE INTO meta (key,value1,value2) VALUES (?,?,IFNULL((SELECT value2 FROM meta WHERE key=? AND value1=?), 0)+?); 5 2 12 page_inserts 0 2 2 12 page_inserts 0 2 0 132

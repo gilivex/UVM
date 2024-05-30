@@ -25,7 +25,7 @@ class my_agent extends uvm_agent;
     function void connect_phase(uvm_phase phase);
         drv.seq_item_port.connect(seqr.seq_item_export);
         mon_in_h.mon_in_ap.connect(agnt_in_ap);
-        mon_out__h.mon_out_ap.connect(agnt_in_ap);
+        mon_out_h.mon_out_ap.connect(agnt_in_ap);
     endfunction
 
 endclass

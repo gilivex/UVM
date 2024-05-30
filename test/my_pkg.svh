@@ -14,7 +14,6 @@ package my_pkg;
 	`include "my_driver.sv"
 
 	`include "my_agent.sv"
-	`include "my_agent_out.sv"
 
 	`include "scoreboard.sv"
 	

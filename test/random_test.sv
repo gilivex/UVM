@@ -30,7 +30,7 @@ class random_test extends uvm_test;
 		phase.drop_objection(this);
 		// printing the trans in and the trans out
 		`uvm_info("", $sformatf("numbers of trans_in : ", e_env.agnt_in.mon_in_h.sum_of_trans_in), UVM_LOW)
-		`uvm_info("", $sformatf("numbers of trans_out : ", e_env.agnt_out.mon_out_h.sum_of_trans_out), UVM_LOW)
+		`uvm_info("", $sformatf("numbers of trans_out : ", e_env.agnt_in.mon_out_h.sum_of_trans_out), UVM_LOW)
 	endtask
 
 	//task after the run phase
@@ -38,7 +38,7 @@ class random_test extends uvm_test;
 		phase.raise_objection(this);
 		`uvm_info("", "This is the extract phase", UVM_MEDIUM)
 		`uvm_info("", $sformatf("numbers of trans_in : ", e_env.agnt_in.mon_in_h.sum_of_trans_in), UVM_LOW)
-		`uvm_info("", $sformatf("numbers of trans_out : ", e_env.agnt_out.mon_out_h.sum_of_trans_out), UVM_LOW)
+		`uvm_info("", $sformatf("numbers of trans_out : ", e_env.agnt_in.mon_out_h.sum_of_trans_out), UVM_LOW)
 		phase.drop_objection(this);
 	endtask
 endclass
