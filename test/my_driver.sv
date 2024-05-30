@@ -4,7 +4,8 @@ class my_driver extends uvm_driver#(my_transaction);
 	`uvm_component_utils(my_driver)
 	
 	virtual inf vinf;
-	
+	bit start = 1 ;
+    int time = 8700;
 	// constructor
 	function new(string name, uvm_component parent);
 		super.new(name, parent);
@@ -21,16 +22,18 @@ class my_driver extends uvm_driver#(my_transaction);
 		my_transaction trans = new();
 		forever begin
 			seq_item_port.get_next_item(trans);
-			@(posedge vinf.clk) begin				
-				// vinf.rst <= trans.rst;
-				vinf.write_en <= trans.write_en;
-				vinf.read_en <= trans.read_en;
-				vinf.data_in <= trans.data_in;
-				//`uvm_info("", $sformatf("driver: enable=%0d, a=%0d, b=%0d", vinf.enable, vinf.a, vinf.b), UVM_MEDIUM)
+	
+           if (start == 0)begin
+            #time;
+            for(int i=0; i<8; i++)begin
+                   vinf.get_bit <= trans.data_in[i];
+                   #time;
+                end
+            start = 1;
+            #time;
+            end
 			seq_item_port.item_done();
-
 			end
-		end
 	endtask
 
 endclass

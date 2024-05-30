@@ -21,8 +21,8 @@ class monitor_in extends uvm_monitor;
         my_tran = my_transaction::type_id::create("my_tran", this);
 
         forever begin 
-   
-            @(vinf.rx)
+        for(int i=0; i<8; i++)begin
+            @(posedge vinf.clk)
              begin 
                my_tran = vinf.rx;
                 
