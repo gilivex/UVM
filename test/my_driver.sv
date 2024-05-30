@@ -4,8 +4,7 @@ class my_driver extends uvm_driver#(my_transaction);
 	`uvm_component_utils(my_driver)
 	
 	virtual inf vinf;
-	bit start = 1 ;
-    int time = 8700;
+     time dur = 8700ns;
 	// constructor
 	function new(string name, uvm_component parent);
 		super.new(name, parent);
@@ -22,18 +21,16 @@ class my_driver extends uvm_driver#(my_transaction);
 		my_transaction trans = new();
 		forever begin
 			seq_item_port.get_next_item(trans);
-	
-           if (start == 0)begin
-            #time;
+            vinf.get_bit <= 0;
+            #dur;
             for(int i=0; i<8; i++)begin
                    vinf.get_bit <= trans.data_in[i];
-                   #time;
+                   #dur;
                 end
-            start = 1;
-            #time;
-            end
+            vinf.get_bit = 1;
+            #dur;
 			seq_item_port.item_done();
-			end
+            end
 	endtask
 
 endclass
