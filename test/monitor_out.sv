@@ -7,7 +7,7 @@ class monitor_out extends uvm_monitor;
     my_transaction my_tran;
     bit next_is_valid = 0;
     int sum_of_trans_out = 0;
-
+    time dur = 8700ns;
     function new (string name, uvm_component parent);
         super.new (name, parent) ;
     endfunction
@@ -22,35 +22,23 @@ class monitor_out extends uvm_monitor;
     task run_phase(uvm_phase phase);
 
         my_tran = my_transaction::type_id::create("my_tran", this);
-        next_is_valid = 0;
-            forever begin
-                // fork the process to wait for the enable signal
-                @(posedge vinf.clk);
-                fork
-                    // wait for the enable signal
-                    begin
-                        #2ps;//wait for 3ns to make sure the signal is stable
-                        if(vinf.write_en == 1'b1 || vinf.read_en == 1'b1 || vinf.rst == 1'b1) begin
-                            next_is_valid = 1;
-                        end
-                        else begin
-                            next_is_valid = 0;
-                        end
-                    end
-               
-                    begin
-                        if(next_is_valid) begin
-                            my_tran.full = vinf.full;
-                            my_tran.empty = vinf.empty;
-                            my_tran.data_out = vinf.data_out;
-                            //send the transaction to the analysis port
-                            sum_of_trans_out++;
-                            mon_out_ap.write(my_tran);
-                        end
-                    end 
-                join;
-            end 
         
+        forever begin 
+           @(negedge vinf.get_bit)
+           #dur *1.5;
+             begin
+                for(int i=0; i<8; i++)begin
+                    my_tran.data_in[i] = vinf.get_bit;
+                    #dur;
+                end
+                if(vinf.get_bit !=1)
+                `uvm_error("STOP bit ERROR")
+                else begin
+                    sum_of_trans_out++;
+                    mon_out_ap.write(my_tran);
+        end 
+    end
+        end
     endtask
 
 endclass
